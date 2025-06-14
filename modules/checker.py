@@ -62,29 +62,3 @@ def isItEasterTimeNow():
 
   today = datetime.now()
   return easter_date.date() == today.date()
-       
-def is_silly(question, correct_answer, wrong_answers, time_given, question_list):
-
-    if re.search(r'\d{50,}', question) or re.search(r'\d{50,}', correct_answer):
-        return True, "Question contains a very long sequence of numbers!"
-    
-    if re.search(r'^[a-zA-Z0-9]{20,}$', question):
-      return True, "Question appears to be a string of random characters!"
-
-    if len(set(wrong_answers)) != len(wrong_answers):
-        return True, "Wrong answers are identical!"
-
-    if correct_answer in wrong_answers:
-        return True, "A wrong answer is the same as the correct answer!"
-
-    question_counter = Counter((q.question, q.correctAnswer, tuple(q.wrongAnswers)) for q in question_list)
-    if question_counter[(question, correct_answer, tuple(wrong_answers))] > 10:
-        return True, "There are more than 10 identical questions!"
-    
-    if len(wrong_answers) > 9:
-        return True, "Too many wrong answer options!"
-
-    if time_given < 5:
-      return True, f"{time_given} seconds is not enough!"
-
-    return False, ""
